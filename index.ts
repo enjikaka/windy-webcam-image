@@ -8,7 +8,7 @@ async function respond (webcamId: string | undefined) {
   const windyUrl = new URL(`https://api.windy.com/api/webcams/v2/list/webcam=${webcamId}`);
 
   windyUrl.searchParams.append('show', 'webcams:location,image');
-  windyUrl.searchParams.append('key', Deno.env('API_KEY'));
+  windyUrl.searchParams.append('key', Deno.env.get('API_KEY'));
 
   const response = await fetch(windyUrl.toString());
 
