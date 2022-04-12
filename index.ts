@@ -15,8 +15,6 @@ async function respond (webcamId: string | undefined) {
   windyUrl.searchParams.append('show', 'webcams:location,image');
   windyUrl.searchParams.append('key', apiKey);
 
-  console.log(windyUrl.toString());
-
   const response = await fetch(windyUrl.toString());
 
   if (!response.ok) {
@@ -45,5 +43,4 @@ function handler(req: Request): Promise<Response> | Response {
   }
 }
 
-console.log("Listening on http://localhost:8000");
 await serve(handler);
