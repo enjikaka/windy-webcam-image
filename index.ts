@@ -6,9 +6,16 @@ async function respond (webcamId: string | undefined) {
   }
 
   const windyUrl = new URL(`https://api.windy.com/api/webcams/v2/list/webcam=${webcamId}`);
+  const apiKey = Deno.env.get('API_KEY');
+
+  if (!apiKey) {
+    throw new ReferenceError('No API_KEY in env.');
+  }
 
   windyUrl.searchParams.append('show', 'webcams:location,image');
-  windyUrl.searchParams.append('key', Deno.env.get('API_KEY'));
+  windyUrl.searchParams.append('key', apiKey);
+
+  console.log(windyUrl.toString());
 
   const response = await fetch(windyUrl.toString());
 
@@ -27,7 +34,7 @@ async function respond (webcamId: string | undefined) {
 }
 
 function handler(req: Request): Promise<Response> | Response {
-  const [, webcamId] = new URL(req.url).pathname;
+  const [, webcamId] = new URL(req.url).pathname.split('/');
 
   try {
     return respond(webcamId);
